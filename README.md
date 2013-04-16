@@ -1,4 +1,4 @@
-# angular-gestures
+# angular-momentum-scroll
 
 AngularJS directive that adds momentum scroll via iScroll (http://cubiq.org/iscroll-4).
 
