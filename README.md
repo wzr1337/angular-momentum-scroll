@@ -9,4 +9,5 @@ AngularJS directive that adds momentum scroll via iScroll (http://cubiq.org/iscr
 * Add the `scrollable` attribute to a container of your choice:
     * the container MUST have set width and height !!
     * in order to scroll horizontally the .scroller class inside of your container MUST have set width and height !!
-* The container takes an additional attribute `parameters` according to iScroll docs. e.g. <div id="my-cont" style="height: 400px; width: 100%;" scrollable parameters="{{ {hScrollbar : true, snap: '.row'} }}">
+* The container takes an additional attribute `parameters` according to iScroll docs. e.g. 
+   `<div id="my-cont" style="height: 400px; width: 100%;" scrollable parameters="{{ {hScrollbar : true, snap: '.row'} }}">`
