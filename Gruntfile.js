@@ -35,6 +35,12 @@ module.exports = function(grunt) {
             },
             all : [ 'Gruntfile.js', 'src/*.js' ]
         },
+        karma : {
+            unit : {
+                configFile : 'karma.conf.js',
+                singleRun : true
+            }
+        },
         compress: {
             main: {
                 options: {
@@ -55,6 +61,8 @@ module.exports = function(grunt) {
         'uglify',
         'compress'
     ]);
+
+    grunt.registerTask('test', ['karma']);
 
     grunt.registerTask('default', [ 'build' ]);
 };
