@@ -1,7 +1,8 @@
 {
-  "name": "angular-gestures",
-  "version": "0.1.0",
-  "description": "AngularJS directive that adds support for multi touch gestures to your app. Based on hammer.js.",
+  "author": "Patrick Bartsch",
+  "name": "angular-momentum-scroll",
+  "description": "Momentum scroll for AngularJS based on iScroll.",
+  "version": "0.3.0",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "grunt test",
@@ -9,19 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wzr1337/angular-gestures.git"
+    "url": "git://github.com/wzr1337/angular-momentum-scroll.git"
   },
   "keywords": [
     "angularjs",
-    "hammer.js",
-    "gestures",
-    "multitouch"
+    "iscroll",
+    "momentum",
+    "scrolling"
   ],
   "author": "wzr1337",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "gitHead": "5f9f8f07dc9e0adf87ba119045b9191d90dfe9ca",
   "dependencies": {
+    "grunt": "~0.4.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

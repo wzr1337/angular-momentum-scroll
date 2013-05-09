@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('demoApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $log) {
     $scope.awesomeThings = [
       'scroll me down',
       'HTML5 Boilerplate',
@@ -44,4 +44,5 @@ angular.module('demoApp')
       'HTML5',
       'Javascript'
     ];
+    $scope.log = function(msg) {$log.log(msg)};
   });

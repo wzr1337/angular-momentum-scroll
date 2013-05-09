@@ -1139,18 +1139,41 @@ var scrollable = function() {
     scope : {
       parameters : '@',
       scrollToPage : '@',
-      scrollToPageTime : '@' || 100
+      scrollToPageTime : '@' || 100,
+      onRefresh: '&',
+      onBeforeScrollStart: '&',
+      onScrollStart: '&',
+      onBeforeScrollMove: '&',
+      onScrollMove: '&',
+      onBeforeScrollEnd: '&',
+      onScrollEnd: '&',
+      onTouchEnd: '&',
+      onDestroy: '&',
+      onZoomStart: '&',
+      onZoom: '&',
+      onZoomEnd: '&'
     },
     transclude : true,
     template : '<div class="scroller" ng-transclude></div>',
     link : function(scope, element, attrs) {
-      // strange behavior: if I do not observe, the scope.parameters will
-      // be undefined
       attrs.$observe('parameters', function(val) {
 
         // parse the JSON string
-        scope.iscrollParameters = angular.fromJson(val);
-
+        if (typeof val === 'string') {
+          scope.iscrollParameters = angular.fromJson(val);
+        }
+        else {
+          scope.iscrollParameters = val;
+        }
+        // attach 'on'-callbacks
+        for (var onMethod in scope) {
+          if ((onMethod.indexOf('on') !== -1) &&
+              scope.hasOwnProperty(onMethod) &&
+              angular.isDefined(scope[onMethod])) {
+            scope.iscrollParameters[onMethod] = scope[onMethod];
+          }
+        }
+        // apply some necessary styling 
         element.css('overflow', 'auto');
         element.css('position', 'relative');
         // fix for automatic horizontal scroll
