@@ -1123,23 +1123,26 @@ angular.module('angular-momentum-scroll', []);
  * e.g. <div id="my-cont" style="height: 400px; width: 100%;" scrollable
  * parameters="{{ {hScrollbar : true, snap: '.row'} }}">...</div>
  *
- * if you want to programatically scroll to a page (snapping option has to be
- * set), you can use additional attributes scroll-to-page and 
- * scroll-to-page-time like this:
+ * You can bind a page number from the parents container to the scrollers
+ * current page by using curr-page-x and curr-page-y attributes. The binding is
+ * two way, so your parent scope will be updated also on scrolling.
+ * This means, you can use curr-page-x and curr-page-y for scrolling to a page 
+ * programatically as well as for listening to page changes. 
  *
  * <div scrollable style="height: 80%; width: 100%;" 
- *      scroll-to-page="{{ mypage }}" scroll-to-page-time = "5000"
+ *      curr-page-y="{{ mypage }}" scroll-to-page-time = "5000"
  *      parameters="{{ { hScroll: true, hScrollbar: false, snap: true,
  *      momentum: false} }}"">...</div>
  */
-var scrollable = function() {
+var scrollable = function($timeout) {
 
   return {
     restrict : 'AE',
     scope : {
       parameters : '@',
-      scrollToPage : '@',
-      scrollToPageTime : '@' || 100,
+      scrollToPageTime : '@' || 400,
+      currPageX : '=',
+      currPageY : '=',
       onRefresh: '&',
       onBeforeScrollStart: '&',
       onScrollStart: '&',
@@ -1169,10 +1172,11 @@ var scrollable = function() {
         for (var onMethod in scope) {
           if ((onMethod.indexOf('on') !== -1) &&
               scope.hasOwnProperty(onMethod) &&
-              angular.isDefined(scope[onMethod])) {
+              angular.isFunction(scope[onMethod])) {
             scope.iscrollParameters[onMethod] = scope[onMethod];
           }
         }
+
         // apply some necessary styling 
         element.css('overflow', 'auto');
         element.css('position', 'relative');
@@ -1192,27 +1196,32 @@ var scrollable = function() {
           });
         }
 
-        //added to modify scroll container by param
-        attrs.$observe('scrollToPage', function () {
-          if (angular.isDefined(scope.scrollToPage)) {
-            scope.$watch(scope.scrollToPage, function (newVal) {
-              if (angular.isDefined(newVal)) {
-                //NOTE: works if snap is active (according to iScroll doc)
-                if ('hScroll' in scope.iscrollParameters &&
-                  scope.iscrollParameters.hScroll) {
-                  scroll.scrollToPage(newVal, 0, scope.scrollToPageTime);
-                }
-                else {
-                  scroll.scrollToPage(0, newVal, scope.scrollToPageTime);
-                }
-              }
-            });
-          }
-        });
-
         if (angular.isDefined(scope.iscrollParameters)) {
           var scroll = new iScroll(element[0],
               scope.iscrollParameters);
+          scroll.options.onScrollEnd = function() {
+              //weired behavior, a $timeout needs to wrap scope manipulations
+            $timeout(function(){
+                scope.currPageY = scroll.currPageY;
+                scope.currPageX = scroll.currPageX;
+              });
+            scope.onScrollEnd({pageX: this.currPageX,
+                pageY: this.currPageY});
+          };
+
+          scope.$watch('currPageY', function (newVal, oldVal) {
+            console.log('newVal %s, oldVal %s', newVal, oldVal);
+            if (angular.isDefined(newVal)) {
+              scroll.scrollToPage(0, newVal, scope.scrollToPageTime);
+            }
+          });
+          scope.$watch('currPageX', function (newVal, oldVal) {
+            console.log('newVal %s, oldVal %s', newVal, oldVal);
+            if (angular.isDefined(newVal)) {
+              scroll.scrollToPage(newVal, 0, scope.scrollToPageTime);
+            }
+          });
+
           scope.$watch(function() {
             scroll.refresh();
           });
@@ -1227,4 +1236,4 @@ var scrollable = function() {
     }
   };
 };
-angular.module('angular-momentum-scroll').directive('scrollable', [scrollable]);
+angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout', scrollable]);

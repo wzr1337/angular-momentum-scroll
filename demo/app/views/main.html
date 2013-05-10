@@ -1,6 +1,9 @@
 <div class="hero-unit">
   <h1>Welcome to angular-momentum-scroll demo!</h1>
-    <ol id='mycontainer' scrollable parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}" on-scroll-end="log('end')">
+    <ol id='mycontainer' scrollable parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}" on-scroll-end="log(pageX, pageY)" curr-page-x="currPageX" curr-page-y="currPageY">
       <li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
     </ol>
+    <div id='logger' style="width:100%; height:200px; overflow: scroll;">
+    <div ng-repeat="line in logger"> {{line}}</div>
+    </div>
 </div>
