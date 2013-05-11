@@ -13,9 +13,10 @@ Find a demonstration on http://wzr1337.github.com
     * the container MUST have set width and height !!
     * in order to scroll horizontally the .scroller class inside of your container MUST have set width and height !!
 * The container takes an additional attribute `parameters` according to iScroll docs. e.g. 
-   ```html <div id="my-cont" style="height: 400px; width: 100%;" scrollable 
-
-         parameters="{{ {hScrollbar : true, snap: '.row'} }}">```
+   
+    ```javascript
+    <div id="my-cont" style="height: 400px; width: 100%;" scrollable 
+    parameters="{{ {hScrollbar : true, snap: '.row'} }}">
 
 * You can ergister any of the following handlers by specifying a callback function via attribute:
     * onRefresh
@@ -31,9 +32,7 @@ Find a demonstration on http://wzr1337.github.com
     * onZoom
     * onZoomEnd
 
-    e.g.
-    ```<div id="my-cont" style="height: 400px; width: 100%;" scrollable
-    
-          parameters="{{ {hScrollbar : true, snap: '.row'} }}"
-          
-          on-scroll-move="doSometginhg()">...</div>```
+    ```javascript
+    <div id="my-cont" style="height: 400px; width: 100%;" scrollable
+    parameters="{{ {hScrollbar : true, snap: '.row'} }}"
+    on-scroll-move="doSometginhg()">...</div>
