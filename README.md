@@ -16,9 +16,9 @@ Find a demonstration on http://wzr1337.github.com
    
     ```javascript
     <div id="my-cont" style="height: 400px; width: 100%;" scrollable 
-    parameters="{{ {hScrollbar : true, snap: '.row'} }}">
+    parameters="{{ {vScroll : true, snap: '.row'} }}">
 
-* You can ergister any of the following handlers by specifying a callback function via attribute:
+* You can register any of the following handlers by specifying a callback function via attribute:
     * onRefresh
     * onBeforeScrollStart
     * onScrollStart
@@ -36,3 +36,10 @@ Find a demonstration on http://wzr1337.github.com
     <div id="my-cont" style="height: 400px; width: 100%;" scrollable
     parameters="{{ {hScrollbar : true, snap: '.row'} }}"
     on-scroll-move="doSometginhg()">...</div>
+
+* You can bind a variable to the curr-page-x and curr-page-y attribute. The data binding is bidirectional, so that you can scroll programatically as well as being notified on page change.
+
+  ```javascript
+    <div id="my-cont" style="height: 400px; width: 100%;" scrollable
+    parameters="{{ {vScroll : true, snap: '.row'} }}"
+    curr-page-y="myPageY">...</div>
