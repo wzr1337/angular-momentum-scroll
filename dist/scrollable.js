@@ -1209,15 +1209,15 @@ var scrollable = function($timeout) {
                 pageY: this.currPageY});
           };
 
-          scope.$watch('currPageY', function (newVal, oldVal) {
-            console.log('newVal %s, oldVal %s', newVal, oldVal);
-            if (angular.isDefined(newVal)) {
+          scope.$watch('currPageY', function (newVal) {
+            //console.log('newVal %s, oldVal %s', newVal, oldVal);
+            if (scroll.pagesY.length !== 0 && angular.isDefined(newVal)) {
               scroll.scrollToPage(0, newVal, scope.scrollToPageTime);
             }
           });
-          scope.$watch('currPageX', function (newVal, oldVal) {
-            console.log('newVal %s, oldVal %s', newVal, oldVal);
-            if (angular.isDefined(newVal)) {
+          scope.$watch('currPageX', function (newVal) {
+            //console.log('newVal %s, oldVal %s', newVal, oldVal);
+            if (scroll.pagesX.length  !== 0 && angular.isDefined(newVal)) {
               scroll.scrollToPage(newVal, 0, scope.scrollToPageTime);
             }
           });

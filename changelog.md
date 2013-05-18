@@ -1,5 +1,11 @@
 # Change-Log
 
+## 2013-05-17 v0.4.1
+Fixed a bug with emtpy scrollers
+
+## 2013-05-16 v0.4.0
+Added two way data bound pages
+
 ## 2013-05-09 v0.3.0
 Added callbacks for 'on' handles of iScroll
 
