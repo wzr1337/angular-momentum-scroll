@@ -1202,8 +1202,12 @@ var scrollable = function($timeout) {
           scroll.options.onScrollEnd = function() {
               //weired behavior, a $timeout needs to wrap scope manipulations
             $timeout(function(){
-                scope.currPageY = scroll.currPageY;
-                scope.currPageX = scroll.currPageX;
+                if (angular.isDefined(scope.currPageY)) {
+                  scope.currPageY = scroll.currPageY;
+                }
+                if (angular.isDefined(scope.currPageX)) {
+                  scope.currPageX = scroll.currPageX;
+                }
               });
             scope.onScrollEnd({pageX: this.currPageX,
                 pageY: this.currPageY});
