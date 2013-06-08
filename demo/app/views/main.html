@@ -11,6 +11,14 @@
 			<span class="add-on">pageY</span> <input class="span2" type="number"
 				ng-model="currPageY">
 		</div>
+    <div class="input-prepend">
+      <span class="add-on">X</span> <input class="span2" type="number"
+        ng-model="currX">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on">Y</span> <input class="span2" type="number"
+        ng-model="currY">
+    </div>
 		<div class="btn" ng-click="scrollToPage(5)">scroll to page 5</div>
 		<div class="btn" ng-click="scrollToPage(10)">scroll to page 10</div>
 		<div class="btn" ng-click="prepend('foo')">prepend item 'foo'</div>
@@ -18,8 +26,8 @@
 	</div>
 	<ol id='mycontainer' scrollable
 		parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}"
-		on-scroll-end="logcallback(pageX, pageY)" curr-page-x="currPageX"
-		curr-page-y="currPageY">
+		on-scroll-end="logcallback(pageX, pageY, X, Y)" curr-page-x="currPageX"
+		curr-page-y="currPageY" curr-x="currX" curr-y="currY">
 		<li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
 	</ol>
 
