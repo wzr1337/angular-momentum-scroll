@@ -1143,6 +1143,8 @@ var scrollable = function($timeout) {
       scrollToPageTime : '@' || 400,
       currPageX : '=',
       currPageY : '=',
+      currY : '=',
+      currX : '=',
       onRefresh: '&',
       onBeforeScrollStart: '&',
       onScrollStart: '&',
@@ -1200,7 +1202,6 @@ var scrollable = function($timeout) {
           var scroll = new iScroll(element[0],
               scope.iscrollParameters);
           scroll.options.onScrollEnd = function() {
-              //weired behavior, a $timeout needs to wrap scope manipulations
             $timeout(function(){
                 if (angular.isDefined(scope.currPageY)) {
                   scope.currPageY = scroll.currPageY;
@@ -1208,21 +1209,39 @@ var scrollable = function($timeout) {
                 if (angular.isDefined(scope.currPageX)) {
                   scope.currPageX = scroll.currPageX;
                 }
+                if (angular.isDefined(scope.currY)) {
+                  scope.currY = scroll.y;
+                  console.dir(scroll);
+                }
+                if (angular.isDefined(scope.currX)) {
+                  scope.currX = scroll.x;
+                }
               });
             scope.onScrollEnd({pageX: this.currPageX,
-                pageY: this.currPageY});
+                pageY: this.currPageY,
+                X: this.currX,
+                Y: this.currY});
           };
 
           scope.$watch('currPageY', function (newVal) {
-            //console.log('newVal %s, oldVal %s', newVal, oldVal);
             if (scroll.pagesY.length !== 0 && angular.isDefined(newVal)) {
               scroll.scrollToPage(0, newVal, scope.scrollToPageTime);
             }
           });
           scope.$watch('currPageX', function (newVal) {
-            //console.log('newVal %s, oldVal %s', newVal, oldVal);
             if (scroll.pagesX.length  !== 0 && angular.isDefined(newVal)) {
               scroll.scrollToPage(newVal, 0, scope.scrollToPageTime);
+            }
+          });
+
+          scope.$watch('currY', function (newVal) {
+            if (angular.isDefined(newVal)) {
+              scroll.scrollTo(0, newVal, scope.scrollToPageTime);
+            }
+          });
+          scope.$watch('currX', function (newVal) {
+            if (angular.isDefined(newVal)) {
+              scroll.scrollTo(newVal, 0, scope.scrollToPageTime);
             }
           });
 

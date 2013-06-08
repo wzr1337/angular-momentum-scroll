@@ -1,5 +1,8 @@
 # Change-Log
 
+## 2013-06-08 v0.4.3
+Now supports X and Y coordinates of scroller
+
 ## 2013-05-17 v0.4.1
 Fixed a bug with emtpy scrollers
 

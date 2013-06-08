@@ -2,6 +2,8 @@
 
 angular.module('demoApp')
   .controller('MainCtrl', function ($scope, $log) {
+    $scope.currX = 0;
+    $scope.currY = 0;
     $scope.currPageX = 0;
     $scope.currPageY = 0;
     $scope.awesomeThings = [
@@ -53,13 +55,19 @@ angular.module('demoApp')
       $scope.logger.splice(0, 0, _msg);
       $log.log(_msg);
     };
-    $scope.logcallback = function(pageX, pageY) {
-      $scope.log('From callback: pageX ' + pageX + ' pageY ' + pageY);
+    $scope.logcallback = function(pageX, pageY, X, Y) {
+      $scope.log('From callback: pageX ' + pageX + ' pageY ' + pageY +
+          ' X ' + X, ' Y ' + Y);
     };
     $scope.$watch('currPageY', function() {
       $scope.log('From scope: pageX ' + $scope.currPageX + ' pageY ' +
           $scope.currPageY);
     });
+    $scope.$watch('currY', function() {
+      $scope.log('From scope: X ' + $scope.currX + ' Y ' +
+          $scope.currY );
+    });
+    
 
     // scope methods
     $scope.scrollToPage = function(page) {
