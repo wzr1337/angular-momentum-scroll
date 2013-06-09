@@ -1,38 +1,57 @@
 <div class="hero-unit">
-	<h2>Welcome to angular-momentum-scroll demo!</h2>
-	<p>You can scroll the list of awesome items manually or you can use
-		the controll panel to do it programatically.</p>
-	<div id="controlpanel" class="panel">
-		<div class="input-prepend">
-			<span class="add-on">pageX</span> <input class="span2" type="number"
-				ng-model="currPageX">
-		</div>
-		<div class="input-prepend">
-			<span class="add-on">pageY</span> <input class="span2" type="number"
-				ng-model="currPageY">
-		</div>
-    <div class="input-prepend">
-      <span class="add-on">X</span> <input class="span2" type="number"
-        ng-model="currX">
+  <h2>Welcome to angular-momentum-scroll demo!</h2>
+  <p>You can scroll the list of awesome items manually or you can
+    use the controll panel to do it programatically.</p>
+  <div id="controlpanel" class="panel">
+    <div class="row">
+      <div class="span4">
+        <div class="input-prepend">
+          <span class="add-on">pageX</span> <input class="span2"
+            type="number" ng-model="currPageX">
+        </div>
+        <div class="input-prepend">
+          <span class="add-on">pageY</span> <input class="span2"
+            type="number" ng-model="currPageY">
+        </div>
+      </div>
+      <div class="span4">
+        <div class="input-prepend">
+          <span class="add-on">X</span> <input class="span2"
+            type="number" ng-model="currX">
+        </div>
+        <div class="input-prepend">
+          <span class="add-on">Y</span> <input class="span2"
+            type="number" ng-model="currY">
+        </div>
+      </div>
+      <div class="span2">
+        <div class="input-prepend">
+          <span class="add-on">Top</span> <input class="span2"
+            type="text" ng-model="isMinY" disabled>
+        </div>
+        <div class="input-prepend">
+          <span class="add-on">Bottom</span> <input class="span2"
+            type="text" ng-model="isMaxY" disabled>
+        </div>
+      </div>
     </div>
-    <div class="input-prepend">
-      <span class="add-on">Y</span> <input class="span2" type="number"
-        ng-model="currY">
+    <div class="row-fuild">
+      <div class="btn span2" ng-click="scrollToPage(5)">scroll to page 5</div>
+      <div class="btn span2" ng-click="scrollToPage(10)">scroll to page 10</div>
+      <div class="btn span2" ng-click="prepend('foo')">prepend item 'foo'</div>
+      <div class="btn span2" ng-click="append('bar')">append item 'bar'</div>
     </div>
-		<div class="btn" ng-click="scrollToPage(5)">scroll to page 5</div>
-		<div class="btn" ng-click="scrollToPage(10)">scroll to page 10</div>
-		<div class="btn" ng-click="prepend('foo')">prepend item 'foo'</div>
-		<div class="btn" ng-click="append('bar')">append item 'bar'</div>
-	</div>
-	<ol id='mycontainer' scrollable
-		parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}"
-		on-scroll-end="logcallback(pageX, pageY, X, Y)" curr-page-x="currPageX"
-		curr-page-y="currPageY" curr-x="currX" curr-y="currY">
-		<li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
-	</ol>
+  </div>
+  <ol id='mycontainer' scrollable
+    parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}"
+    on-scroll-end="logcallback(pageX, pageY, X, Y)"
+    curr-page-x="currPageX" curr-page-y="currPageY" curr-x="currX"
+    curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY">
+    <li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
+  </ol>
 
 
-	<div id="logger">
-		<div ng-repeat="line in logger">{{line}}</div>
-	</div>
+  <div id="logger">
+    <div ng-repeat="line in logger">{{line}}</div>
+  </div>
 </div>

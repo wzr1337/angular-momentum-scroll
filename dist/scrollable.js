@@ -1139,17 +1139,21 @@ var scrollable = function($timeout) {
   return {
     restrict : 'AE',
     scope : {
-      parameters : '@',
       scrollToPageTime : '@' || 400,
       currPageX : '=',
       currPageY : '=',
       currY : '=',
-      currX : '=',
+      currX : '=' ,
+      isMaxX : '=',
+      isMinX : '=',
+      isMaxY : '=',
+      isMinY : '=',
       onRefresh: '&',
       onBeforeScrollStart: '&',
       onScrollStart: '&',
       onBeforeScrollMove: '&',
       onScrollMove: '&',
+      parameters : '@',
       onBeforeScrollEnd: '&',
       onScrollEnd: '&',
       onTouchEnd: '&',
@@ -1170,6 +1174,9 @@ var scrollable = function($timeout) {
         else {
           scope.iscrollParameters = val;
         }
+        scope.hScroll = ('hScroll' in scope.iscrollParameters &&
+            scope.iscrollParameters.hScroll);
+
         // attach 'on'-callbacks
         for (var onMethod in scope) {
           if ((onMethod.indexOf('on') !== -1) &&
@@ -1183,8 +1190,7 @@ var scrollable = function($timeout) {
         element.css('overflow', 'auto');
         element.css('position', 'relative');
         // fix for automatic horizontal scroll
-        if ('hScroll' in scope.iscrollParameters &&
-            scope.iscrollParameters.hScroll) {
+        if (scope.hScroll){
           var scroller = angular.element(
               element.children('.scroller')[0]);
           scroller.css('display', 'inline-block');
@@ -1211,11 +1217,23 @@ var scrollable = function($timeout) {
                 }
                 if (angular.isDefined(scope.currY)) {
                   scope.currY = scroll.y;
-                  console.dir(scroll);
                 }
                 if (angular.isDefined(scope.currX)) {
                   scope.currX = scroll.x;
                 }
+                if (angular.isDefined(scope.isMaxY)) {
+                  scope.isMaxY = (scroll.y <= scroll.maxScrollY);
+                }
+                if (angular.isDefined(scope.isMinY)) {
+                  scope.isMinY = (scroll.y >= scroll.minScrollY);
+                }
+                if (angular.isDefined(scope.isMaxX)) {
+                  scope.isMaxX = (scroll.x >= scroll.maxScrollX);
+                }
+                if (angular.isDefined(scope.isMinX)) {
+                  scope.isMinX = (scroll.x <= scroll.minScrollX);
+                }
+                console.log(scope);
               });
             scope.onScrollEnd({pageX: this.currPageX,
                 pageY: this.currPageY,
@@ -1259,4 +1277,5 @@ var scrollable = function($timeout) {
     }
   };
 };
-angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout', scrollable]);
+angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
+                                                                   scrollable]);

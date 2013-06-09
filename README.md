@@ -43,3 +43,13 @@ Find a demonstration on http://wzr1337.github.com
     <div id="my-cont" style="height: 400px; width: 100%;" scrollable
     parameters="{{ {vScroll : true, snap: '.row'} }}"
     curr-page-y="myPageY">...</div>
+
+* You can watch isMinY, isMinX and isMaxX, isMAxY to find out, if the scrlller reached its final top or bottom, left or right position. These help you to build an infinitescroll or similar. use them as follows:
+
+  ```javascript
+  <ol id='mycontainer' scrollable
+    parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}"
+    curr-page-x="currPageX" curr-page-y="currPageY" curr-x="currX"
+    curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY">
+    <li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
+  </ol>

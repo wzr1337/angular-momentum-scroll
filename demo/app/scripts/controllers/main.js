@@ -6,6 +6,8 @@ angular.module('demoApp')
     $scope.currY = 0;
     $scope.currPageX = 0;
     $scope.currPageY = 0;
+    $scope.isMaxY = false;
+    $scope.isMinY = false;
     $scope.awesomeThings = [
       'scroll me down',
       'HTML5 Boilerplate',
@@ -67,8 +69,17 @@ angular.module('demoApp')
       $scope.log('From scope: X ' + $scope.currX + ' Y ' +
           $scope.currY );
     });
-    
 
+    $scope.$watch('isMinY', function() {
+      if ($scope.isMinY) {
+        $scope.log('MinY is reached');
+      }
+    });
+    $scope.$watch('isMaxY', function() {
+      if ($scope.isMaxY) {
+        $scope.log('MaxY is reached');
+      }
+    });
     // scope methods
     $scope.scrollToPage = function(page) {
       $scope.currPageY = page;
