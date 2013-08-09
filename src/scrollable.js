@@ -29,7 +29,7 @@ angular.module('angular-momentum-scroll', []);
  *      parameters="{{ { hScroll: true, hScrollbar: false, snap: true,
  *      momentum: false} }}"">...</div>
  */
-var scrollable = function($timeout) {
+var scrollable = function($timeout, $window) {
 
   return {
     restrict : 'AE',
@@ -61,7 +61,7 @@ var scrollable = function($timeout) {
     template : '<div class="scroller" ng-transclude></div>',
     link : function(scope, element, attrs) {
       attrs.$observe('parameters', function(val) {
-
+        var scr = {};
         // parse the JSON string
         if (typeof val === 'string') {
           scope.iscrollParameters = angular.fromJson(val);
@@ -158,9 +158,26 @@ var scrollable = function($timeout) {
             }
           });
 
+          /* refresh on content change */
           scope.$watch(function() {
             scroll.refresh();
           });
+
+          /* refresh the scroller on orientation change for mobile 
+           * 
+           * Detect whether device supports orientationchange event,
+           * otherwise fall back to the resize event. */
+          var supportsOrientationChange = 'onorientationchange' in $window,
+            orientationEvent = supportsOrientationChange ? 'orientationchange' :
+              'resize';
+          /* register for changes */
+          $window.addEventListener(orientationEvent, function() {
+              if (scr.width !== screen.width || scr.height !== screen.height) {
+                scr = {'width' : screen.width, 'height' : screen.height};
+                scroll.refresh();
+              }
+            }, false);
+
           /* make sure to free memory if scrollable element is
            * destroyed (avoid memleaking)*/
           element.bind('$destroy', function() {
@@ -172,5 +189,5 @@ var scrollable = function($timeout) {
     }
   };
 };
-angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
-                                                                   scrollable]);
+angular.module('angular-momentum-scroll').directive('scrollable',
+    ['$timeout', '$window', scrollable]);
