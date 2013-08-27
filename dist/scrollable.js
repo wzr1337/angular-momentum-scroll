@@ -1193,14 +1193,18 @@ var scrollable = function($timeout, $window) {
         if (scope.hScroll){
           var scroller = angular.element(
               element.children('.scroller')[0]);
-          scroller.css('display', 'inline-block');
+          scroller.css('display', '-webkit-inline-flex');
+          scroller.css('display', '-moz-inline-flex');
+          scroller.css('display', '-ms-inline-flexbox');
+          scroller.css('display', '-ms-inline-flex');
+          scroller.css('display', 'inline-flex');
           scroller.css('overflow', 'hidden');
           scroller.css('white-space', 'nowrap');
           scroller.css('font-size', '0rem');
           angular.forEach(scroller.children(), function(value){
             var child = angular.element(value);
             child.css('font-size', '1rem');
-            child.css('display', 'inline-block');
+            child.css('display', 'block');
           });
         }
 

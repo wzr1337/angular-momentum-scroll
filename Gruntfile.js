@@ -40,25 +40,13 @@ module.exports = function(grunt) {
         configFile : 'karma.conf.js',
         singleRun : true
       }
-    },
-    compress: {
-      main: {
-        options: {
-          archive: 'angular-momentum-scroll.zip'
-        },
-        files: [{flatten: true,
-          src: ['dist/*'],
-          dest: 'angular-momentum-scroll/',
-          filter: 'isFile'}]
-      }
     }
   });
 
   grunt.registerTask('build', [ 'clean:dist',
                                 'jshint',
                                 'concat',
-                                'uglify',
-                                'compress' ]);
+                                'uglify']);
 
   grunt.registerTask('test', ['karma']);
 
