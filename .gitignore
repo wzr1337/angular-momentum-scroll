@@ -1,4 +1,4 @@
 .project
 node_modules
-components
+bower_components
 dist
