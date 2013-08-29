@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       dist : {
         files : {
           'dist/scrollable.js' : [
-            'components/iscroll/src/iscroll.js',
+            'bower_components/iscroll/src/iscroll.js',
             'src/scrollable.js'
           ]
         }
