@@ -29,7 +29,8 @@ angular.module('angular-momentum-scroll', []);
  *      parameters="{{ { hScroll: true, hScrollbar: false, snap: true,
  *      momentum: false} }}"">...</div>
  */
-var scrollable = function($timeout, $window) {
+angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
+    '$window', '$document', function($timeout, $window, $document) {
 
   return {
     restrict : 'AE',
@@ -60,6 +61,23 @@ var scrollable = function($timeout, $window) {
     transclude : true,
     template : '<div class="scroller" ng-transclude></div>',
     link : function(scope, element, attrs) {
+      var style =
+        '.inline-flex {' +
+        '  display: -webkit-inline-flex;' +
+        '  display: -moz-inline-flex;' +
+        '  display: -ms-inline-flexbox;' +
+        '  display: -ms-inline-flex;' +
+        '  display: inline-flex;' +
+        '  display: -webkit-inline-box;' +
+        '  overflow: hidden;' +
+        '  white-space: nowrap;' +
+        '}' +
+        '.inline-flex > * {' +
+        '  display: block;' +
+        '}';
+      var head = angular.element($document[0].head);
+      head.append('<style type="text/css">' + style + '</style>');
+
       attrs.$observe('parameters', function(val) {
         var scr = {};
         // parse the JSON string
@@ -88,19 +106,7 @@ var scrollable = function($timeout, $window) {
         if (scope.hScroll){
           var scroller = angular.element(
               element.children('.scroller')[0]);
-          scroller.css('display', '-webkit-inline-flex');
-          scroller.css('display', '-moz-inline-flex');
-          scroller.css('display', '-ms-inline-flexbox');
-          scroller.css('display', '-ms-inline-flex');
-          scroller.css('display', 'inline-flex');
-          scroller.css('overflow', 'hidden');
-          scroller.css('white-space', 'nowrap');
-          scroller.css('font-size', '0rem');
-          angular.forEach(scroller.children(), function(value){
-            var child = angular.element(value);
-            child.css('font-size', '1rem');
-            child.css('display', 'block');
-          });
+          scroller.addClass('inline-flex');
         }
 
         if (angular.isDefined(scope.iscrollParameters)) {
@@ -132,7 +138,6 @@ var scrollable = function($timeout, $window) {
                 if (angular.isDefined(scope.isMinX)) {
                   scope.isMinX = (scroll.x <= scroll.minScrollX);
                 }
-                console.log(scope);
               });
             scope.onScrollEnd({pageX: this.currPageX,
                 pageY: this.currPageY,
@@ -192,6 +197,4 @@ var scrollable = function($timeout, $window) {
       });
     }
   };
-};
-angular.module('angular-momentum-scroll').directive('scrollable',
-    ['$timeout', '$window', scrollable]);
+}]);
