@@ -1,5 +1,11 @@
 # Change-Log
 
+## 2013-09-16 v0.4.8
+smaller fix for orientation change
+
+## 2013-09-16 v0.4.7
+
+
 ## 2013-08-27 v0.4.6
 Fixed horizontal scroll (css)
 

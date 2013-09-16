@@ -181,17 +181,19 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
               'resize';
           /* register for changes */
           $window.addEventListener(orientationEvent, function() {
-              if (scr.width !== screen.width || scr.height !== screen.height) {
-                scr = {'width' : screen.width, 'height' : screen.height};
+            if (scr.width !== screen.width || scr.height !== screen.height) {
+              scr = {'width' : screen.width, 'height' : screen.height};
+              if (angular.isDefined(scroll)) {
                 scroll.refresh();
               }
-            }, false);
+            }
+          }, false);
 
           /* make sure to free memory if scrollable element is
            * destroyed (avoid memleaking)*/
           element.bind('$destroy', function() {
             scroll.destroy();
-            scroll = null;
+            scroll = undefined;
           });
         }
       });
