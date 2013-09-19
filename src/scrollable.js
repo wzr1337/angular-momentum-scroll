@@ -145,31 +145,48 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
                 Y: this.currY});
           };
 
-          scope.$watch('currPageY', function (newVal) {
-            if (scroll.pagesY.length !== 0 && angular.isDefined(newVal)) {
-              scroll.scrollToPage(0, newVal, scope.scrollToPageTime);
+          var scrollToPageY = function (pageY) {
+            if (scroll.pagesY.length !== 0 && angular.isDefined(pageY)) {
+              scroll.scrollToPage(0, pageY, scope.scrollToPageTime);
             }
-          });
-          scope.$watch('currPageX', function (newVal) {
-            if (scroll.pagesX.length  !== 0 && angular.isDefined(newVal)) {
-              scroll.scrollToPage(newVal, 0, scope.scrollToPageTime);
-            }
-          });
+          };
+          scope.$watch('currPageY', scrollToPageY);
 
-          scope.$watch('currY', function (newVal) {
-            if (angular.isDefined(newVal)) {
-              scroll.scrollTo(0, newVal, scope.scrollToPageTime);
+          var scrollToPageX = function (pageX) {
+            if (scroll.pagesX.length  !== 0 && angular.isDefined(pageX)) {
+              scroll.scrollToPage(pageX, 0, scope.scrollToPageTime);
             }
-          });
-          scope.$watch('currX', function (newVal) {
+          };
+          scope.$watch('currPageX', scrollToPageX);
+
+          var scrollToY = function (Y) {
+            if (angular.isDefined(Y)) {
+              scroll.scrollTo(0, Y, scope.scrollToPageTime);
+            }
+          };
+          scope.$watch('currY', scrollToY);
+
+          var scrollToX = function (newVal) {
             if (angular.isDefined(newVal)) {
               scroll.scrollTo(newVal, 0, scope.scrollToPageTime);
             }
-          });
+          };
+          scope.$watch('currX', scrollToX);
 
           /* refresh on content change */
-          scope.$watch(function() {
-            scroll.refresh();
+          var initialized = false;
+          scope.$watch(function(nVal) {
+            if (angular.isDefined(nVal)) {
+              scroll.refresh();
+              if (scroll.pagesX.length > 0 && !initialized) {
+                scrollToPageX(nVal.currPageX);
+                initialized = true;
+              }
+              if (scroll.pagesY.length > 0 && !initialized) {
+                scrollToPageY(nVal.currPageY);
+                initialized = true;
+              }
+            }
           });
 
           /* refresh the scroller on orientation change for mobile 

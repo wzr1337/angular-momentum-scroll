@@ -1,5 +1,8 @@
 # Change-Log
 
+## 2013-09-19 v0.4.9
+initialization of snappping scroll fixed
+
 ## 2013-09-16 v0.4.8
 smaller fix for orientation change
 
