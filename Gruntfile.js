@@ -40,13 +40,22 @@ module.exports = function(grunt) {
         configFile : 'karma.conf.js',
         singleRun : true
       }
+    },
+    copy: {
+      main: {
+        files: [
+          {expand: true, src: ['./*.json'], dest: 'dist/', filter: 'isFile'}, //copy *.json
+          {expand: true, src: ['./*.md'], dest: 'dist/' , filter: 'isFile'}, // copy *.md
+        ]
+      }
     }
   });
 
   grunt.registerTask('build', [ 'clean:dist',
                                 'jshint',
                                 'concat',
-                                'uglify']);
+                                'uglify',
+                                'copy']);
 
   grunt.registerTask('test', ['karma']);
 
