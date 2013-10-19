@@ -21,6 +21,6 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-    "iScroll": false
+    "IScroll": false
   }
 }

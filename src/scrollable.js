@@ -90,15 +90,6 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
         scope.hScroll = ('hScroll' in scope.iscrollParameters &&
             scope.iscrollParameters.hScroll);
 
-        // attach 'on'-callbacks
-        for (var onMethod in scope) {
-          if ((onMethod.indexOf('on') !== -1) &&
-              scope.hasOwnProperty(onMethod) &&
-              angular.isFunction(scope[onMethod])) {
-            scope.iscrollParameters[onMethod] = scope[onMethod];
-          }
-        }
-
         // apply some necessary styling 
         element.css('overflow', 'auto');
         element.css('position', 'relative');
@@ -110,108 +101,115 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
         }
 
         if (angular.isDefined(scope.iscrollParameters)) {
-          var scroll = new iScroll(element[0],
-              scope.iscrollParameters);
-          scroll.options.onScrollEnd = function() {
-            $timeout(function(){
-                if (angular.isDefined(scope.currPageY)) {
-                  scope.currPageY = scroll.currPageY;
-                }
-                if (angular.isDefined(scope.currPageX)) {
-                  scope.currPageX = scroll.currPageX;
-                }
-                if (angular.isDefined(scope.currY)) {
-                  scope.currY = scroll.y;
-                }
-                if (angular.isDefined(scope.currX)) {
-                  scope.currX = scroll.x;
-                }
-                if (angular.isDefined(scope.isMaxY)) {
-                  scope.isMaxY = (scroll.y <= scroll.maxScrollY);
-                }
-                if (angular.isDefined(scope.isMinY)) {
-                  scope.isMinY = (scroll.y >= scroll.minScrollY);
-                }
-                if (angular.isDefined(scope.isMaxX)) {
-                  scope.isMaxX = (scroll.x >= scroll.maxScrollX);
-                }
-                if (angular.isDefined(scope.isMinX)) {
-                  scope.isMinX = (scroll.x <= scroll.minScrollX);
-                }
-              });
-            scope.onScrollEnd({pageX: this.currPageX,
-                pageY: this.currPageY,
-                X: this.currX,
-                Y: this.currY});
-          };
-
-          var scrollToPageY = function (pageY) {
-            if (scroll.pagesY.length !== 0 && angular.isDefined(pageY)) {
-              scroll.scrollToPage(0, pageY, scope.scrollToPageTime);
-            }
-          };
-          scope.$watch('currPageY', scrollToPageY);
-
-          var scrollToPageX = function (pageX) {
-            if (scroll.pagesX.length  !== 0 && angular.isDefined(pageX)) {
-              scroll.scrollToPage(pageX, 0, scope.scrollToPageTime);
-            }
-          };
-          scope.$watch('currPageX', scrollToPageX);
-
-          var scrollToY = function (Y) {
-            if (angular.isDefined(Y)) {
-              scroll.scrollTo(0, Y, scope.scrollToPageTime);
-            }
-          };
-          scope.$watch('currY', scrollToY);
-
-          var scrollToX = function (newVal) {
-            if (angular.isDefined(newVal)) {
-              scroll.scrollTo(newVal, 0, scope.scrollToPageTime);
-            }
-          };
-          scope.$watch('currX', scrollToX);
-
-          /* refresh on content change */
-          var initialized = false;
-          scope.$watch(function(nVal) {
-            if (angular.isDefined(nVal)) {
-              scroll.refresh();
-              if (scroll.pagesX.length > 0 && !initialized) {
-                scrollToPageX(nVal.currPageX);
-                initialized = true;
-              }
-              if (scroll.pagesY.length > 0 && !initialized) {
-                scrollToPageY(nVal.currPageY);
-                initialized = true;
+          $timeout(function() {
+            var scroll = new IScroll(element[0], scope.iscrollParameters);
+                    // attach 'on'-callbacks
+            for (var onMethod in scope) {
+              if ((onMethod.indexOf('on') !== -1) &&
+                  scope.hasOwnProperty(onMethod) &&
+                  angular.isFunction(scope[onMethod])) {
+                scroll.on(onMethod.substring(2).toLowerCase(), scope[onMethod]);
               }
             }
-          });
 
-          /* refresh the scroller on orientation change for mobile 
-           * 
-           * Detect whether device supports orientationchange event,
-           * otherwise fall back to the resize event. */
-          var supportsOrientationChange = 'onorientationchange' in $window,
-            orientationEvent = supportsOrientationChange ? 'orientationchange' :
-              'resize';
-          /* register for changes */
-          $window.addEventListener(orientationEvent, function() {
-            if (scr.width !== screen.width || scr.height !== screen.height) {
-              scr = {'width' : screen.width, 'height' : screen.height};
-              if (angular.isDefined(scroll)) {
+            scroll.on('scrollEnd', function() {
+              $timeout(function(){
+                  if (angular.isDefined(scope.currPageY)) {
+                    scope.currPageY = scroll.currentPage.pageY;
+                  }
+                  if (angular.isDefined(scope.currPageX)) {
+                    scope.currPageX = scroll.currentPage.pageX;
+                  }
+                  if (angular.isDefined(scope.currY)) {
+                    scope.currY = scroll.y;
+                  }
+                  if (angular.isDefined(scope.currX)) {
+                    scope.currX = scroll.x;
+                  }
+                  if (angular.isDefined(scope.isMaxY)) {
+                    scope.isMaxY = (scroll.y <= scroll.maxScrollY);
+                  }
+                  if (angular.isDefined(scope.isMinY)) {
+                    scope.isMinY = (scroll.y >= scroll.minScrollY);
+                  }
+                  if (angular.isDefined(scope.isMaxX)) {
+                    scope.isMaxX = (scroll.x >= scroll.maxScrollX);
+                  }
+                  if (angular.isDefined(scope.isMinX)) {
+                    scope.isMinX = (scroll.x <= scroll.minScrollX);
+                  }
+                });
+              scope.onScrollEnd({pageX: this.currentPage.pageX,
+                  pageY: this.currentPage.pageY,
+                  X: this.x,
+                  Y: this.y});
+            });
+
+            var scrollToPageY = function (pageY) {
+              if (scroll.pages.length !== 0 && angular.isDefined(pageY)) {
+                scroll.goToPage(0, pageY, scope.scrollToPageTime);
+              }
+            };
+            scope.$watch('currPageY', scrollToPageY);
+
+            var scrollToPageX = function (pageX) {
+              if (scroll.pages.length  !== 0 && angular.isDefined(pageX)) {
+                scroll.goToPage(pageX, 0, scope.scrollToPageTime);
+              }
+            };
+            scope.$watch('currPageX', scrollToPageX);
+
+            var scrollToY = function (Y) {
+              if (angular.isDefined(Y)) {
+                scroll.scrollTo(0, Y, scope.scrollToPageTime);
+              }
+            };
+            scope.$watch('currY', scrollToY);
+
+            var scrollToX = function (newVal) {
+              if (angular.isDefined(newVal)) {
+                scroll.scrollTo(newVal, 0, scope.scrollToPageTime);
+              }
+            };
+            scope.$watch('currX', scrollToX);
+
+            // refresh on content change
+            var initialized = false;
+            scope.$watch(function(nVal) {
+              if (angular.isDefined(nVal)) {
                 scroll.refresh();
+                if (scroll.pages.length > 0 && !initialized) {
+                  scrollToPageX(nVal.currPageX);
+                  scrollToPageY(nVal.currPageY);
+                  initialized = true;
+                }
               }
-            }
-          }, false);
+            });
 
-          /* make sure to free memory if scrollable element is
-           * destroyed (avoid memleaking)*/
-          element.bind('$destroy', function() {
-            scroll.destroy();
-            scroll = undefined;
-          });
+            /* refresh the scroller on orientation change for mobile 
+             * 
+             * Detect whether device supports orientationchange event,
+             * otherwise fall back to the resize event. */
+            var supportsOrientationChange = 'onorientationchange' in $window,
+              orientationEvent = supportsOrientationChange ? 'orientationchange' :
+                'resize';
+            /* register for changes */
+            $window.addEventListener(orientationEvent, function() {
+              if (scr.width !== screen.width || scr.height !== screen.height) {
+                scr = {'width' : screen.width, 'height' : screen.height};
+                if (angular.isDefined(scroll)) {
+                  scroll.refresh();
+                }
+              }
+            }, false);
+
+            /* make sure to free memory if scrollable element is
+             * destroyed (avoid memleaking)*/
+            element.bind('$destroy', function() {
+              scroll.destroy();
+              scroll = undefined;
+            });
+          }, 0);
         }
       });
     }

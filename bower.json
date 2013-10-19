@@ -2,7 +2,7 @@
   "author": "Patrick Bartsch",
   "name": "angular-momentum-scroll",
   "description": "Momentum scroll for AngularJS based on iScroll.",
-  "version": "0.4.9",
+  "version": "0.5.0",
   "main": "dist/scrollable.min.js",
   "scripts": [
     "dist/scrollable.min.js"
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "angular": "~1.0.6",
-    "iscroll": "~4.2.5",
+    "iscroll": "~5.0.5",
     "angular-mocks": "~1.0.6"
   }
 }

@@ -1,5 +1,8 @@
 # Change-Log
 
+## 2013-10-18
+migrated to iscroll 5 for better performance on Android
+
 ## 2013-09-19 v0.4.9
 initialization of snappping scroll fixed
 
