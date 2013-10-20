@@ -102,17 +102,22 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
 
         if (angular.isDefined(scope.iscrollParameters)) {
           $timeout(function() {
+            //wait for the transcluded content to be rendered by using $timeout
             var scroll = new IScroll(element[0], scope.iscrollParameters);
-                    // attach 'on'-callbacks
+            // attach 'on'-callbacks
             for (var onMethod in scope) {
               if ((onMethod.indexOf('on') !== -1) &&
                   scope.hasOwnProperty(onMethod) &&
                   angular.isFunction(scope[onMethod])) {
-                scroll.on(onMethod.substring(2).toLowerCase(), scope[onMethod]);
+                var event = onMethod.substring(2).charAt(0).toLowerCase() +
+                  onMethod.substring(2).slice(1);
+                if (event === 'scrollEnd') { continue; }
+                scroll.on(event, scope[onMethod]);
               }
             }
 
             scroll.on('scrollEnd', function() {
+              // custom scrollend callback to intercept 'scroll' callback
               $timeout(function(){
                   if (angular.isDefined(scope.currPageY)) {
                     scope.currPageY = scroll.currentPage.pageY;
@@ -191,8 +196,8 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
              * Detect whether device supports orientationchange event,
              * otherwise fall back to the resize event. */
             var supportsOrientationChange = 'onorientationchange' in $window,
-              orientationEvent = supportsOrientationChange ? 'orientationchange' :
-                'resize';
+              orientationEvent = supportsOrientationChange ?
+                  'orientationchange' : 'resize';
             /* register for changes */
             $window.addEventListener(orientationEvent, function() {
               if (scr.width !== screen.width || scr.height !== screen.height) {
