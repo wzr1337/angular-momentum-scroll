@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, src: ['./*.json'], dest: 'dist/', filter: 'isFile'}, //copy *.json
+          {expand: true, src: ['./bower.json'], dest: 'dist/', filter: 'isFile'}, //copy bower.json
           {expand: true, src: ['./*.md'], dest: 'dist/' , filter: 'isFile'}, // copy *.md
         ]
       }

@@ -43,7 +43,7 @@
     </div>
   </div>
   <ol id='mycontainer' scrollable
-    parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}"
+    parameters="{{ iScrollParameters }}"
     on-scroll-end="logcallback(pageX, pageY, X, Y)"
     curr-page-x="currPageX" curr-page-y="currPageY" curr-x="currX"
     curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY">

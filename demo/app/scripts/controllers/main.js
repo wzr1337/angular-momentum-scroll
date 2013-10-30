@@ -50,6 +50,8 @@ angular.module('demoApp')
       'HTML5',
       'Javascript'
     ];
+    // setup the scroller
+    $scope.iScrollParameters = {vScroll:true, vScrollbar: true, snap : 'li'};
     // setup the logger
     $scope.logger = [];
     $scope.log = function (msg) {

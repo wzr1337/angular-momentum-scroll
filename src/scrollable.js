@@ -119,11 +119,13 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
             scroll.on('scrollEnd', function() {
               // custom scrollend callback to intercept 'scroll' callback
               $timeout(function(){
-                  if (angular.isDefined(scope.currPageY)) {
-                    scope.currPageY = scroll.currentPage.pageY;
-                  }
-                  if (angular.isDefined(scope.currPageX)) {
-                    scope.currPageX = scroll.currentPage.pageX;
+                  if (angular.isDefined(scroll.currentPage)) {
+                    if (angular.isDefined(scope.currPageY)) {
+                      scope.currPageY = scroll.currentPage.pageY;
+                    }
+                    if (angular.isDefined(scope.currPageX)) {
+                      scope.currPageX = scroll.currentPage.pageX;
+                    }
                   }
                   if (angular.isDefined(scope.currY)) {
                     scope.currY = scroll.y;
@@ -135,19 +137,24 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
                     scope.isMaxY = (scroll.y <= scroll.maxScrollY);
                   }
                   if (angular.isDefined(scope.isMinY)) {
-                    scope.isMinY = (scroll.y >= scroll.minScrollY);
+                    scope.isMinY = (scroll.y >= 0);
                   }
                   if (angular.isDefined(scope.isMaxX)) {
                     scope.isMaxX = (scroll.x >= scroll.maxScrollX);
                   }
                   if (angular.isDefined(scope.isMinX)) {
-                    scope.isMinX = (scroll.x <= scroll.minScrollX);
+                    scope.isMinX = (scroll.x <= 0);
                   }
                 });
-              scope.onScrollEnd({pageX: this.currentPage.pageX,
-                  pageY: this.currentPage.pageY,
-                  X: this.x,
-                  Y: this.y});
+              var state = {
+                pageX: angular.isDefined(this.currentPage) ?
+                    this.currentPage.pageX : undefined,
+                pageY: angular.isDefined(this.currentPage) ?
+                    this.currentPage.pageY : undefined,
+                X: this.x,
+                Y: this.y
+              };
+              scope.onScrollEnd(state);
             });
 
             var scrollToPageY = function (pageY) {
