@@ -1,5 +1,8 @@
 # Change-Log
 
+## 2013-10-30
+Fixed regular scroll
+
 ## 2013-10-18
 migrated to iscroll 5 for better performance on Android
 

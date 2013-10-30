@@ -1,6 +1,6 @@
 # angular-momentum-scroll
 
-AngularJS directive that adds momentum scroll via iScroll (http://cubiq.org/iscroll-4).
+AngularJS directive that adds momentum scroll via iScroll (http://cubiq.org).
 
 ## Demo
 Find a demonstration on http://wzr1337.github.com

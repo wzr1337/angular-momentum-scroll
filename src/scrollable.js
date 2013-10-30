@@ -151,14 +151,16 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
             });
 
             var scrollToPageY = function (pageY) {
-              if (scroll.pages.length !== 0 && angular.isDefined(pageY)) {
+              if (angular.isDefined(scroll.pages) &&
+                  scroll.pages.length !== 0 && angular.isDefined(pageY)) {
                 scroll.goToPage(0, pageY, scope.scrollToPageTime);
               }
             };
             scope.$watch('currPageY', scrollToPageY);
 
             var scrollToPageX = function (pageX) {
-              if (scroll.pages.length  !== 0 && angular.isDefined(pageX)) {
+              if (angular.isDefined(scroll.pages) &&
+                  scroll.pages.length  !== 0 && angular.isDefined(pageX)) {
                 scroll.goToPage(pageX, 0, scope.scrollToPageTime);
               }
             };
@@ -183,7 +185,8 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
             scope.$watch(function(nVal) {
               if (angular.isDefined(nVal)) {
                 scroll.refresh();
-                if (scroll.pages.length > 0 && !initialized) {
+                if (angular.isDefined(scroll.pages) &&
+                    scroll.pages.length > 0 && !initialized) {
                   scrollToPageX(nVal.currPageX);
                   scrollToPageY(nVal.currPageY);
                   initialized = true;
