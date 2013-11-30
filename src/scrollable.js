@@ -30,38 +30,39 @@ angular.module('angular-momentum-scroll', []);
  *      momentum: false} }}"">...</div>
  */
 angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
-    '$window', '$document', function($timeout, $window, $document) {
+  '$window', '$document', function($timeout, $window, $document) {
 
-  return {
-    restrict : 'AE',
-    scope : {
-      scrollToPageTime : '@' || 400,
-      currPageX : '=',
-      currPageY : '=',
-      currY : '=',
-      currX : '=' ,
-      isMaxX : '=',
-      isMinX : '=',
-      isMaxY : '=',
-      isMinY : '=',
-      onRefresh: '&',
-      onBeforeScrollStart: '&',
-      onScrollStart: '&',
-      onBeforeScrollMove: '&',
-      onScrollMove: '&',
-      parameters : '@',
-      onBeforeScrollEnd: '&',
-      onScrollEnd: '&',
-      onTouchEnd: '&',
-      onDestroy: '&',
-      onZoomStart: '&',
-      onZoom: '&',
-      onZoomEnd: '&'
-    },
-    transclude : true,
-    template : '<div class="scroller" ng-transclude></div>',
-    link : function(scope, element, attrs) {
-      var style =
+    return {
+      restrict : 'AE',
+      scope : {
+        scrollToPageTime : '@' || 400,
+        currPageX : '=',
+        currPageY : '=',
+        currY : '=',
+        currX : '=' ,
+        isMaxX : '=',
+        isMinX : '=',
+        isMaxY : '=',
+        isMinY : '=',
+        onRefresh: '&',
+        onBeforeScrollStart: '&',
+        onScrollStart: '&',
+        onBeforeScrollMove: '&',
+        onScrollMove: '&',
+        parameters : '@',
+        onBeforeScrollEnd: '&',
+        onScrollEnd: '&',
+        onTouchEnd: '&',
+        onDestroy: '&',
+        onZoomStart: '&',
+        onZoom: '&',
+        onZoomEnd: '&'
+      },
+      transclude : true,
+      template : '<div class="scroller" ng-transclude></div>',
+      link : function(scope, element, attrs) {
+      // add stying
+        var style =
         '.inline-flex {' +
         '  display: -webkit-inline-flex;' +
         '  display: -moz-inline-flex;' +
@@ -75,158 +76,160 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
         '.inline-flex > * {' +
         '  display: block;' +
         '}';
-      var head = angular.element($document[0].head);
-      head.append('<style type="text/css">' + style + '</style>');
-
-      attrs.$observe('parameters', function(val) {
-        var scr = {};
-        // parse the JSON string
-        if (typeof val === 'string') {
-          scope.iscrollParameters = angular.fromJson(val);
-        }
-        else {
-          scope.iscrollParameters = val;
-        }
-        scope.scrollX = ('scrollX' in scope.iscrollParameters &&
-            scope.iscrollParameters.scrollX);
-
+        var head = angular.element($document[0].head);
+        head.append('<style type="text/css">' + style + '</style>');
         // apply some necessary styling 
         element.css('overflow', 'auto');
         element.css('position', 'relative');
+        var scroller = angular.element(element.children('.scroller')[0]);
         // fix for automatic horizontal scroll
-        if (scope.scrollX){
-          var scroller = angular.element(
-              element.children('.scroller')[0]);
+        if (angular.isDefined(scope.scrollX)){
           scroller.addClass('inline-flex');
         }
 
-        if (angular.isDefined(scope.iscrollParameters)) {
-          $timeout(function() {
-            //wait for the transcluded content to be rendered by using $timeout
-            var scroll = new IScroll(element[0], scope.iscrollParameters);
-            // attach 'on'-callbacks
-            for (var onMethod in scope) {
-              if ((onMethod.indexOf('on') !== -1) &&
-                  scope.hasOwnProperty(onMethod) &&
-                  angular.isFunction(scope[onMethod])) {
-                var event = onMethod.substring(2).charAt(0).toLowerCase() +
-                  onMethod.substring(2).slice(1);
-                if (event === 'scrollEnd') { continue; }
-                scroll.on(event, scope[onMethod]);
-              }
+      //define handlers
+        var handleScrollEnd = function() {
+          $timeout(function(){
+          // custom scrollend callback to intercept 'scroll' callback
+            if (angular.isDefined(scope.currY)) {
+              scope.currY = iScrollInstance.y;
+            }
+            if (angular.isDefined(scope.isMaxY)) {
+              scope.isMaxY = (iScrollInstance.y <= iScrollInstance.maxScrollY);
+            }
+            if (angular.isDefined(scope.isMinY)) {
+              scope.isMinY = (iScrollInstance.y >= 0);
+            }
+            if (angular.isDefined(scope.currX)) {
+              scope.currX = iScrollInstance.x;
+            }
+            if (angular.isDefined(scope.isMaxX)) {
+              scope.isMaxX = (iScrollInstance.x >= iScrollInstance.maxScrollX);
+            }
+            if (angular.isDefined(scope.isMinX)) {
+              scope.isMinX = (iScrollInstance.x <= 0);
             }
 
-            scroll.on('scrollEnd', function() {
-              // custom scrollend callback to intercept 'scroll' callback
-              $timeout(function(){
-                  if (angular.isDefined(scroll.currentPage)) {
-                    if (angular.isDefined(scope.currPageY)) {
-                      scope.currPageY = scroll.currentPage.pageY;
-                    }
-                    if (angular.isDefined(scope.currPageX)) {
-                      scope.currPageX = scroll.currentPage.pageX;
-                    }
-                  }
-                  if (angular.isDefined(scope.currY)) {
-                    scope.currY = scroll.y;
-                  }
-                  if (angular.isDefined(scope.currX)) {
-                    scope.currX = scroll.x;
-                  }
-                  if (angular.isDefined(scope.isMaxY)) {
-                    scope.isMaxY = (scroll.y <= scroll.maxScrollY);
-                  }
-                  if (angular.isDefined(scope.isMinY)) {
-                    scope.isMinY = (scroll.y >= 0);
-                  }
-                  if (angular.isDefined(scope.isMaxX)) {
-                    scope.isMaxX = (scroll.x >= scroll.maxScrollX);
-                  }
-                  if (angular.isDefined(scope.isMinX)) {
-                    scope.isMinX = (scroll.x <= 0);
+            if (angular.isDefined(iScrollInstance.currentPage)) {
+              if (angular.isDefined(scope.currPageY)) {
+                scope.currPageY = iScrollInstance.currentPage.pageY;
+              }
+              if (angular.isDefined(scope.currPageX)) {
+                scope.currPageX = iScrollInstance.currentPage.pageX;
+              }
+            }
+            var state = {
+              pageX: angular.isDefined(iScrollInstance.currentPage) ?
+              iScrollInstance.currentPage.pageX : undefined,
+              pageY: angular.isDefined(iScrollInstance.currentPage) ?
+              iScrollInstance.currentPage.pageY : undefined,
+              X: iScrollInstance.x,
+              Y: iScrollInstance.y
+            };
+            scope.onScrollEnd(state);
+          });
+        };
+
+        var iScrollInstance;
+        var scrollToPageX = function (pageX) {
+          if (angular.isDefined(iScrollInstance.pages) &&
+            iScrollInstance.pages.length  !== 0 && angular.isDefined(pageX)) {
+            iScrollInstance.goToPage(pageX, 0, scope.scrollToPageTime);
+          }
+        };
+        var scrollToPageY = function (pageY) {
+          if (angular.isDefined(iScrollInstance.pages) &&
+            iScrollInstance.pages.length !== 0 && angular.isDefined(pageY)) {
+            iScrollInstance.goToPage(0, pageY, scope.scrollToPageTime);
+          }
+        };
+        var scrollToY = function (Y) {
+          if (angular.isDefined(Y)) {
+            iScrollInstance.scrollTo(0, Y, scope.scrollToPageTime);
+          }
+        };
+        var scrollToX = function (newVal) {
+          if (angular.isDefined(newVal)) {
+            iScrollInstance.scrollTo(newVal, 0, scope.scrollToPageTime);
+          }
+        };
+
+        // initializer
+        var _init = function() {
+          iScrollInstance = new IScroll(element[0], scope.iscrollParameters);
+          // attach 'on'-callbacks
+          for (var onMethod in scope) {
+            if ((onMethod.indexOf('on') !== -1) &&
+              scope.hasOwnProperty(onMethod) &&
+              angular.isFunction(scope[onMethod])) {
+              var event = onMethod.substring(2).charAt(0).toLowerCase() +
+            onMethod.substring(2).slice(1);
+              if (event === 'scrollEnd') { continue; }
+              iScrollInstance.on(event, scope[onMethod]);
+            }
+          }
+
+          iScrollInstance.on('scrollEnd', handleScrollEnd);
+          scope.$watch('currPageY', scrollToPageY);
+          scope.$watch('currPageX', scrollToPageX);
+          scope.$watch('currY', scrollToY);
+          scope.$watch('currX', scrollToX);
+
+         /* refresh the scroller on orientation change for mobile 
+          * 
+          * Detect whether device supports orientationchange event,
+          * otherwise fall back to the resize event. */
+          var supportsOrientationChange = 'onorientationchange' in $window,
+          orientationEvent = supportsOrientationChange ?
+         'orientationchange' : 'resize';
+          var scr = {};
+          /* register for changes */
+          $window.addEventListener(orientationEvent, function() {
+            if (scr.width !== screen.width || scr.height !== screen.height) {
+              scr = {'width' : screen.width, 'height' : screen.height};
+              if (angular.isDefined(iScrollInstance)) {
+                iScrollInstance.refresh();
+              }
+            }
+          }, false);
+
+          /* make sure to free memory if scrollable element is
+          * destroyed (avoid memleaking)*/
+          element.bind('$destroy', function() {
+              iScrollInstance.destroy();
+              iScrollInstance = undefined;
+            });
+        };
+
+        attrs.$observe('parameters', function(val) {
+          // parse the JSON string
+          if (angular.isString(val)) {
+            scope.iscrollParameters = angular.fromJson(val);
+          }
+          else {
+            scope.iscrollParameters = val;
+          }
+          scope.scrollX = ('scrollX' in scope.iscrollParameters &&
+            scope.iscrollParameters.scrollX);
+
+          // refresh on content change
+          scope.$watchCollection(function () { return scroller.children(); },
+            function(nVal) {
+              if (angular.isDefined(nVal)) {
+                if (angular.isDefined(iScrollInstance)) {
+                  iScrollInstance.destroy();
+                }
+                $timeout(function(){
+                  _init();
+                  if (angular.isDefined(iScrollInstance.pages) &&
+                    iScrollInstance.pages.length > 0) {
+                    scrollToPageX(nVal.currPageX);
+                    scrollToPageY(nVal.currPageY);
                   }
                 });
-              var state = {
-                pageX: angular.isDefined(this.currentPage) ?
-                    this.currentPage.pageX : undefined,
-                pageY: angular.isDefined(this.currentPage) ?
-                    this.currentPage.pageY : undefined,
-                X: this.x,
-                Y: this.y
-              };
-              scope.onScrollEnd(state);
-            });
-
-            var scrollToPageY = function (pageY) {
-              if (angular.isDefined(scroll.pages) &&
-                  scroll.pages.length !== 0 && angular.isDefined(pageY)) {
-                scroll.goToPage(0, pageY, scope.scrollToPageTime);
-              }
-            };
-            scope.$watch('currPageY', scrollToPageY);
-
-            var scrollToPageX = function (pageX) {
-              if (angular.isDefined(scroll.pages) &&
-                  scroll.pages.length  !== 0 && angular.isDefined(pageX)) {
-                scroll.goToPage(pageX, 0, scope.scrollToPageTime);
-              }
-            };
-            scope.$watch('currPageX', scrollToPageX);
-
-            var scrollToY = function (Y) {
-              if (angular.isDefined(Y)) {
-                scroll.scrollTo(0, Y, scope.scrollToPageTime);
-              }
-            };
-            scope.$watch('currY', scrollToY);
-
-            var scrollToX = function (newVal) {
-              if (angular.isDefined(newVal)) {
-                scroll.scrollTo(newVal, 0, scope.scrollToPageTime);
-              }
-            };
-            scope.$watch('currX', scrollToX);
-
-            // refresh on content change
-            var initialized = false;
-            scope.$watch(function(nVal) {
-              if (angular.isDefined(nVal)) {
-                scroll.refresh();
-                if (angular.isDefined(scroll.pages) &&
-                    scroll.pages.length > 0 && !initialized) {
-                  scrollToPageX(nVal.currPageX);
-                  scrollToPageY(nVal.currPageY);
-                  initialized = true;
-                }
               }
             });
-
-            /* refresh the scroller on orientation change for mobile 
-             * 
-             * Detect whether device supports orientationchange event,
-             * otherwise fall back to the resize event. */
-            var supportsOrientationChange = 'onorientationchange' in $window,
-              orientationEvent = supportsOrientationChange ?
-                  'orientationchange' : 'resize';
-            /* register for changes */
-            $window.addEventListener(orientationEvent, function() {
-              if (scr.width !== screen.width || scr.height !== screen.height) {
-                scr = {'width' : screen.width, 'height' : screen.height};
-                if (angular.isDefined(scroll)) {
-                  scroll.refresh();
-                }
-              }
-            }, false);
-
-            /* make sure to free memory if scrollable element is
-             * destroyed (avoid memleaking)*/
-            element.bind('$destroy', function() {
-              scroll.destroy();
-              scroll = undefined;
-            });
-          }, 0);
-        }
-      });
-    }
-  };
-}]);
+        });
+      }
+    };
+  }]);
