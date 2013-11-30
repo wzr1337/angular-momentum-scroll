@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('demoApp', ['angular-momentum-scroll'])
+angular.module('demoApp', ['angular-momentum-scroll', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
