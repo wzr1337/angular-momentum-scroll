@@ -196,9 +196,11 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
           /* make sure to free memory if scrollable element is
           * destroyed (avoid memleaking)*/
           element.bind('$destroy', function() {
+            if (angular.isDefined(iScrollInstance)) {
               iScrollInstance.destroy();
               iScrollInstance = undefined;
-            });
+            }
+          });
         };
 
         attrs.$observe('parameters', function(val) {
