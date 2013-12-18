@@ -79,13 +79,9 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
         var head = angular.element($document[0].head);
         head.append('<style type="text/css">' + style + '</style>');
         // apply some necessary styling 
-        element.css('overflow', 'auto');
+        element.css('overflow', 'hidden');
         element.css('position', 'relative');
         var scroller = angular.element(element.children('.scroller')[0]);
-        // fix for automatic horizontal scroll
-        if (angular.isDefined(scope.scrollX)){
-          scroller.addClass('inline-flex');
-        }
 
       //define handlers
         var handleScrollEnd = function() {
@@ -196,9 +192,11 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
           /* make sure to free memory if scrollable element is
           * destroyed (avoid memleaking)*/
           element.bind('$destroy', function() {
+            if (angular.isDefined(iScrollInstance)) {
               iScrollInstance.destroy();
               iScrollInstance = undefined;
-            });
+            }
+          });
         };
 
         attrs.$observe('parameters', function(val) {
@@ -211,6 +209,10 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
           }
           scope.scrollX = ('scrollX' in scope.iscrollParameters &&
             scope.iscrollParameters.scrollX);
+          // fix for automatic horizontal scroll
+          if (angular.isDefined(scope.scrollX)){
+            scroller.addClass('inline-flex');
+          }
 
           // refresh on content change
           scope.$watchCollection(function () { return scroller.children(); },

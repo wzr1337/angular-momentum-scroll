@@ -1,5 +1,11 @@
 # Change-Log
 
+## 2014-01-17
+fixed horizontal scroll css
+
+## 2013-12-18
+fixed $destroy
+
 ## 2013-11-30
 fixed reinitialization on DOM extension
 fixed accessing undefined scope vars
