@@ -1,5 +1,8 @@
 # Change-Log
 
+## 2014-06-15
+fixed check for scrollX
+
 ## 2014-01-17
 fixed horizontal scroll css
 

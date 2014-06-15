@@ -210,7 +210,7 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
           scope.scrollX = ('scrollX' in scope.iscrollParameters &&
             scope.iscrollParameters.scrollX);
           // fix for automatic horizontal scroll
-          if (angular.isDefined(scope.scrollX)){
+          if (scope.scrollX){
             scroller.addClass('inline-flex');
           }
 
