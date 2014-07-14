@@ -1,6 +1,7 @@
 {
   "name": "",
   "version": "",
+  "author": "Patrick Bartsch",
   "description": "Momentum scroll for AngularJS based on iScroll.",
   "main": "./scrollable.js",
   "homepage": "https://github.com/wzr1337/bower-angular-momentum-scroll",
