@@ -1,0 +1,14 @@
+{
+  "name": "",
+  "version": "",
+  "description": "Momentum scroll for AngularJS based on iScroll.",
+  "main": "./scrollable.js",
+  "homepage": "https://github.com/wzr1337/bower-angular-momentum-scroll",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wzr1337/bower-angular-momentum-scroll"
+  },
+  "dependencies": {
+    "angular": "^1.2.3"
+  }
+}

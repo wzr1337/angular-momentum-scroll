@@ -1,3 +1,11 @@
+/**
+ * @license angular-momentum-scroll
+ * (c) 2012-2014 Patrick Bartsch
+ * Momentum scroll for AngularJS based on iScroll
+ * License: MIT
+ */
+(function(angular) {
+
 'use strict';
 
 angular.module('angular-momentum-scroll', []);
@@ -235,3 +243,5 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
       }
     };
   }]);
+
+})(angular);
