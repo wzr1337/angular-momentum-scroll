@@ -1,5 +1,16 @@
 # Change-Log
 
+## 2014-07-14
+* Moved to version number 0.5.8
+* Fixed bower.json of distribution package so that the ```main``` path is now a valid path
+    * Fixes issue that grunt-wiredep couldn't inject angular-momentum-scroll
+    * Bower package version contains now build timestamp
+* Modified build process so that the minified file holds now proper license informations of angular-momentum-scroll and the used iScroll library
+* Wrapped scrollable.js into an IIFE to avoid code leaking
+* Source map gets now included into the distribution package
+* Updated NPM and Bower dependencies
+* Updated Karma test suite
+
 ## 2014-06-15
 fixed check for scrollX
 
