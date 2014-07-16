@@ -7,16 +7,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     buildversion: '<%= pkg.version %>-' + grunt.template.today('yymmddHHMM'),
-    concat : {
-      dist : {
-        files : {
-          'dist/scrollable.js' : [
-            'bower_components/iscroll/build/iscroll.js',
-            'src/scrollable.js'
-          ]
-        }
-      }
-    },
     clean : {
       dist : {
         files : [ {
@@ -25,6 +15,19 @@ module.exports = function(grunt) {
         } ]
       },
       server : '.tmp'
+    },
+    ngAnnotate: {
+      options: {
+        singleQuotes: true,
+      },
+      dist: {
+        files : {
+          'dist/scrollable.js' : [
+            'bower_components/iscroll/build/iscroll.js',
+            'src/scrollable.js'
+          ]
+        }
+      },
     },
     uglify: {
       options: {
@@ -71,7 +74,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [ 'clean:dist',
                                 'jshint',
-                                'concat',
+                                'ngAnnotate',
                                 'uglify',
                                 'copy',
                                 'json-replace']);
