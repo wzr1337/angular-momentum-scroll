@@ -61,13 +61,22 @@ module.exports = function(grunt) {
     'json-replace': {
       options: {
         space: '  ',
-        replace: {
-          name: '<%= pkg.name %>',
-          version: '<%= buildversion %>'
-        }
       },
-      dist: {
-        files: {'dist/bower.json': [ 'config/bower-template.json' ]}
+      bowerdist: {
+        options: {
+          replace: {
+            version: '<%= buildversion %>'
+          }
+        },
+        files: {'dist/bower.json': [ 'bower.dist.json' ]}
+      },
+      bower: {
+        options: {
+          replace: {
+            version: '<%= pkg.version %>'
+          }
+        },
+        files: {'bower.json': [ 'bower.json' ]}
       }
     }
   });
