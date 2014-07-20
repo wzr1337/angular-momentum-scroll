@@ -50,6 +50,10 @@ angular.module('demoApp')
       '39 HTML5',
       '40 Javascript'
     ];
+
+    // setup scollable controller
+    $scope.scrollableControl = {};
+
     // setup the scroller
     $scope.iScrollParameters = {vScroll:true, vScrollbar: true, snap : 'li'};
     // setup the logger
