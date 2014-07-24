@@ -68,6 +68,11 @@ module.exports = function(grunt) {
             version: '<%= buildversion %>',
             devDependencies: '',
             scripts : '',
+            homepage: 'https://github.com/wzr1337/bower-angular-momentum-scroll',
+            repository: {
+              'type': 'git',
+              'url': 'git://github.com/wzr1337/bower-angular-momentum-scroll'
+            },
             main: './scrollable.min.js'
           }
         },
