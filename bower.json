@@ -14,8 +14,10 @@
     "type": "git",
     "url": "git://github.com/wzr1337/angular-momentum-scroll"
   },
+  "dependencies": {
+    "angular": "~1.2.21"
+  },
   "devDependencies": {
-    "angular": "~1.2.21",
     "iscroll": "~5.1.2",
     "angular-mocks": "~1.2.21"
   }

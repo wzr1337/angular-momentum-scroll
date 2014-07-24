@@ -10,8 +10,5 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/wzr1337/bower-angular-momentum-scroll"
-  },
-  "dependencies": {
-    "angular": "^1.2.3"
   }
 }
