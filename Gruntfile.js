@@ -5,16 +5,8 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
-    concat : {
-      dist : {
-        files : {
-          'dist/scrollable.js' : [
-            'bower_components/iscroll/build/iscroll.js',
-            'src/scrollable.js'
-          ]
-        }
-      }
-    },
+    pkg: grunt.file.readJSON('package.json'),
+    buildversion: '<%= pkg.version %>-' + grunt.template.today('yymmddHHMM'),
     clean : {
       dist : {
         files : [ {
@@ -24,7 +16,25 @@ module.exports = function(grunt) {
       },
       server : '.tmp'
     },
+    ngAnnotate: {
+      options: {
+        singleQuotes: true,
+      },
+      dist: {
+        files : {
+          'dist/scrollable.js' : [
+            'bower_components/iscroll/build/iscroll.js',
+            'src/scrollable.js'
+          ]
+        }
+      },
+    },
     uglify: {
+      options: {
+        // Keep license informations
+        preserveComments: 'some',
+        sourceMap: true
+      },
       dist: {
         files: { 'dist/scrollable.min.js': [ 'dist/scrollable.js' ] }
       }
@@ -44,18 +54,39 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, src: ['./bower.json'], dest: 'dist/', filter: 'isFile'}, //copy bower.json
           {expand: true, src: ['./*.md'], dest: 'dist/' , filter: 'isFile'}, // copy *.md
         ]
+      }
+    },
+    'json-replace': {
+      options: {
+        space: '  ',
+      },
+      bowerdist: {
+        options: {
+          replace: {
+            version: '<%= buildversion %>'
+          }
+        },
+        files: {'dist/bower.json': [ 'bower.dist.json' ]}
+      },
+      bower: {
+        options: {
+          replace: {
+            version: '<%= pkg.version %>'
+          }
+        },
+        files: {'bower.json': [ 'bower.json' ]}
       }
     }
   });
 
   grunt.registerTask('build', [ 'clean:dist',
                                 'jshint',
-                                'concat',
+                                'ngAnnotate',
                                 'uglify',
-                                'copy']);
+                                'copy',
+                                'json-replace']);
 
   grunt.registerTask('test', ['karma']);
 

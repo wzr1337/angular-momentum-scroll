@@ -1,0 +1,17 @@
+{
+  "author": "Patrick Bartsch",
+  "name": "angular-momentum-scroll",
+  "version": "",
+  "description": "Momentum scroll for AngularJS based on iScroll.",
+  "license": "MIT",
+  "main": "./scrollable.js",
+  "ignore": [],
+  "homepage": "https://github.com/wzr1337/bower-angular-momentum-scroll",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wzr1337/bower-angular-momentum-scroll"
+  },
+  "dependencies": {
+    "angular": "^1.2.3"
+  }
+}

@@ -1,3 +1,11 @@
+/**
+ * @license angular-momentum-scroll
+ * (c) 2012-2014 Patrick Bartsch
+ * Momentum scroll for AngularJS based on iScroll
+ * License: MIT
+ */
+(function(angular) {
+
 'use strict';
 
 angular.module('angular-momentum-scroll', []);
@@ -29,8 +37,8 @@ angular.module('angular-momentum-scroll', []);
  *      parameters="{{ { hScroll: true, hScrollbar: false, snap: true,
  *      momentum: false} }}"">...</div>
  */
-angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
-  '$window', '$document', function($timeout, $window, $document) {
+angular.module('angular-momentum-scroll').directive('scrollable',
+  function($timeout, $window, $document) {
 
     return {
       restrict : 'AE',
@@ -234,4 +242,6 @@ angular.module('angular-momentum-scroll').directive('scrollable', ['$timeout',
         });
       }
     };
-  }]);
+  });
+
+})(angular);
