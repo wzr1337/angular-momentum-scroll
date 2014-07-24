@@ -65,10 +65,13 @@ module.exports = function(grunt) {
       bowerdist: {
         options: {
           replace: {
-            version: '<%= buildversion %>'
+            version: '<%= buildversion %>',
+            devDependencies: '',
+            scripts : '',
+            main: './scrollable.min.js'
           }
         },
-        files: {'dist/bower.json': [ 'bower.dist.json' ]}
+        files: {'dist/bower.json': [ 'bower.json' ]}
       },
       bower: {
         options: {
