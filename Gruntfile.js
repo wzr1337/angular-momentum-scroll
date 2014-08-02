@@ -1,12 +1,15 @@
 'use strict';
 
 module.exports = function(grunt) {
+
+  var isPreReleaseBuild = grunt.option('pre-release') !== undefined; 
+
   // load all grunt tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    buildversion: '<%= pkg.version %>-' + grunt.template.today('yymmddHHMM'),
+    buildversion: (isPreReleaseBuild) ? '<%= pkg.version %>-' + grunt.template.today('yymmddHHMM') : '<%= pkg.version %>',
     clean : {
       dist : {
         files : [ {
