@@ -35,18 +35,20 @@
         </div>
       </div>
     </div>
-    <div class="row-fuild">
-      <div class="btn span2" ng-click="scrollToPage(5)">scroll to page 5</div>
-      <div class="btn span2" ng-click="scrollToPage(10)">scroll to page 10</div>
-      <div class="btn span2" ng-click="prepend('foo')">prepend item 'foo'</div>
-      <div class="btn span2" ng-click="append('bar')">append item 'bar'</div>
+    <div class="controlpanel-btn-group row-fuild btn-group">
+      <div class="btn" ng-click="scrollToPage(5)">scroll to page 5</div>
+      <div class="btn" ng-click="scrollToPage(10)">scroll to page 10</div>
+      <div class="btn" ng-click="prepend('foo')">prepend item 'foo'</div>
+      <div class="btn" ng-click="append('bar')">append item 'bar'</div>
+      <div class="btn" ng-click="scrollableControl.refresh()">refresh</div>
     </div>
   </div>
   <ol id='mycontainer' scrollable
     parameters="{{ iScrollParameters }}"
     on-scroll-end="logcallback(pageX, pageY, X, Y)"
     curr-page-x="currPageX" curr-page-y="currPageY" curr-x="currX"
-    curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY">
+    curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY"
+    control="scrollableControl" >
     <li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
   </ol>
 

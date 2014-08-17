@@ -26,3 +26,8 @@
 	overflow-y: scroll;
 	width: 100%;
 }
+
+.controlpanel-btn-group{
+	margin-left: 120px;
+	margin-bottom: 15px;
+}

@@ -64,7 +64,8 @@ angular.module('angular-momentum-scroll').directive('scrollable',
         onDestroy: '&',
         onZoomStart: '&',
         onZoom: '&',
-        onZoomEnd: '&'
+        onZoomEnd: '&',
+        control: '='
       },
       transclude : true,
       template : '<div class="scroller" ng-transclude></div>',
@@ -240,6 +241,23 @@ angular.module('angular-momentum-scroll').directive('scrollable',
               }
             });
         });
+
+        // Expose public functions via scope.control
+
+        var internalControls = scope.control || {};
+
+        /**
+         * Trigger a refresh of the iScroll instance so that iScroll
+         * updates its stored dimension informations about the wrapper
+         * and the scroller element. 
+         * Required in case of CSS updates or other modifications
+         * on the DOM.
+         */
+        internalControls.refresh = function() {
+          if (angular.isDefined(iScrollInstance)) {
+            iScrollInstance.refresh();
+          }
+        };
       }
     };
   });
