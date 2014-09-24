@@ -51,7 +51,7 @@ angular.module('demoApp')
       '40 Javascript'
     ];
     // setup the scroller
-    $scope.iScrollParameters = {vScroll:true, vScrollbar: true, snap : 'li'};
+    $scope.iScrollParameters = {vScroll:true, scrollbars: true, snap : 'li', preventDefault : false};
     // setup the logger
     $scope.logger = [];
     $scope.log = function (msg) {
@@ -59,6 +59,11 @@ angular.module('demoApp')
       $scope.logger.splice(0, 0, _msg);
       $log.log(_msg);
     };
+
+    $scope.clicked= function (item) {
+      $scope.log('clicked: ' + item);
+      $log.log('clicked: ' + item);
+    }
     $scope.logcallback = function(pageX, pageY, X, Y) {
       $scope.log('From callback: pageX ' + pageX + ' pageY ' + pageY +
           ' X ' + X, ' Y ' + Y);

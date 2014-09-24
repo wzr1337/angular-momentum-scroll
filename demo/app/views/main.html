@@ -47,7 +47,7 @@
     on-scroll-end="logcallback(pageX, pageY, X, Y)"
     curr-page-x="currPageX" curr-page-y="currPageY" curr-x="currX"
     curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY">
-    <li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
+    <li class="listitem" ng-repeat="thing in awesomeThings track by $index" ng-click="clicked(thing)">{{thing}}</li>
   </ol>
 
 
