@@ -1,5 +1,9 @@
 # Change-Log
 
+## 2014-9-24
+* Listening to resize of scroller instead of number of elements
+* Default option preventDefualt set to false (allow clicktrhough)
+
 ## 2014-07-14
 * Moved to version number 0.5.8
 * Fixed bower.json of distribution package so that the ```main``` path is now a valid path

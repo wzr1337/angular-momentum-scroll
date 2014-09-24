@@ -221,25 +221,36 @@ angular.module('angular-momentum-scroll').directive('scrollable',
           if (scope.scrollX){
             scroller.addClass('inline-flex');
           }
-
-          // refresh on content change
-          scope.$watchCollection(function () { return scroller.children(); },
-            function(nVal) {
-              if (angular.isDefined(nVal)) {
-                if (angular.isDefined(iScrollInstance)) {
-                  iScrollInstance.destroy();
-                }
-                $timeout(function(){
-                  _init();
-                  if (angular.isDefined(iScrollInstance.pages) &&
-                    iScrollInstance.pages.length > 0) {
-                    scrollToPageX(nVal.currPageX);
-                    scrollToPageY(nVal.currPageY);
-                  }
-                });
-              }
-            });
+          // do not prevent Clicks into nested elements by default
+          scope.iscrollParameters.preventDefault = val.preventDefault || false;
         });
+
+        var _refresh = function(nVal) {
+            if (angular.isDefined(nVal)) {
+              if (angular.isDefined(iScrollInstance)) {
+                iScrollInstance.destroy();
+              }
+              $timeout(function(){
+                _init();
+                if (angular.isDefined(iScrollInstance.pages) &&
+                  iScrollInstance.pages.length > 0) {
+                  scrollToPageX(nVal.currPageX);
+                  scrollToPageY(nVal.currPageY);
+                }
+              });
+            }
+          };
+
+        // refresh on content change
+        scope.$watch(function () { return scroller[0].offsetHeight; },
+          _refresh
+          );
+        scope.$watch(function () { return scroller[0].offsetWidth; },
+          _refresh
+          );
+
+        // initial refresh
+        _refresh();
       }
     };
   });
