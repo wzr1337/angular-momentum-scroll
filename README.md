@@ -34,7 +34,7 @@ Find a demonstration on http://wzr1337.github.com
 
     ```javascript
     <div id="my-cont" style="height: 400px; width: 100%;" scrollable
-    parameters="{{ {hScrollbar : true, snap: '.row'} }}"
+    parameters="{{ {scrollbars : true, snap: '.row'} }}"
     on-scroll-move="doSometginhg()">...</div>
 
 * You can bind a variable to the curr-page-x and curr-page-y attribute. The data binding is bidirectional, so that you can scroll programatically as well as being notified on page change.
@@ -48,7 +48,7 @@ Find a demonstration on http://wzr1337.github.com
 
   ```javascript
   <ol id='mycontainer' scrollable
-    parameters="{{ {vScroll:true, vScrollbar: true, snap: 'li'} }}"
+    parameters="{{ {vScroll:true, scrollbars: true, snap: 'li'} }}"
     curr-page-x="currPageX" curr-page-y="currPageY" curr-x="currX"
     curr-y="currY" is-min-y="isMinY" is-max-y="isMaxY">
     <li class="listitem" ng-repeat="thing in awesomeThings">{{thing}}</li>
