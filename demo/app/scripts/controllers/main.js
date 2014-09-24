@@ -63,7 +63,7 @@ angular.module('demoApp')
     $scope.clicked= function (item) {
       $scope.log('clicked: ' + item);
       $log.log('clicked: ' + item);
-    }
+    };
     $scope.logcallback = function(pageX, pageY, X, Y) {
       $scope.log('From callback: pageX ' + pageX + ' pageY ' + pageY +
           ' X ' + X, ' Y ' + Y);
