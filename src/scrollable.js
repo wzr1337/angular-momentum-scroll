@@ -222,7 +222,7 @@ angular.module('angular-momentum-scroll').directive('scrollable',
             scroller.addClass('inline-flex');
           }
           // do not prevent Clicks into nested elements by default
-          scope.iscrollParameters.preventDefault = val.preventDefault || false;
+          scope.iscrollParameters.click = angular.isDefined(val.click) ? val.click : true;
         });
 
         var _refresh = function(nVal) {
