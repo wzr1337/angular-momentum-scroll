@@ -1,5 +1,8 @@
 # Change-Log
 
+## 2014-09-25
+fixed click behavior for older webkit browsers
+
 ## 2014-9-24
 * Listening to resize of scroller instead of number of elements
 * Default option preventDefualt set to false (allow clicktrhough)

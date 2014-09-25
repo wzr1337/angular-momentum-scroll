@@ -1,7 +1,7 @@
 {
   "author": "Patrick Bartsch",
   "name": "angular-momentum-scroll",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "Momentum scroll for AngularJS based on iScroll.",
   "license": "MIT",
   "readmeFilename": "README.md",
