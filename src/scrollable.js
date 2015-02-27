@@ -227,10 +227,10 @@ angular.module('angular-momentum-scroll').directive('scrollable',
 
         var _refresh = function(nVal) {
             if (angular.isDefined(nVal)) {
-              if (angular.isDefined(iScrollInstance)) {
-                iScrollInstance.destroy();
-              }
               $timeout(function(){
+                if (angular.isDefined(iScrollInstance)) {
+                  iScrollInstance.destroy();
+                }
                 _init();
                 if (angular.isDefined(iScrollInstance.pages) &&
                   iScrollInstance.pages.length > 0) {
