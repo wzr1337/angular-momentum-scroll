@@ -5,7 +5,7 @@
   "description": "Momentum scroll for AngularJS based on iScroll.",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "main": "Gruntfile.js",
+  "main": "src/scrollable.js",
   "scripts": {
     "test": "grunt test",
     "build": "grunt build"
