@@ -108,10 +108,10 @@ angular.module('angular-momentum-scroll').directive('scrollable',
               scope.currX = iScrollInstance.x;
             }
             if (angular.isDefined(scope.isMaxX)) {
-              scope.isMaxX = (iScrollInstance.x >= iScrollInstance.maxScrollX);
+              scope.isMaxX = (iScrollInstance.x <= iScrollInstance.maxScrollX);
             }
             if (angular.isDefined(scope.isMinX)) {
-              scope.isMinX = (iScrollInstance.x <= 0);
+              scope.isMinX = (iScrollInstance.x >= 0);
             }
 
             if (angular.isDefined(iScrollInstance.currentPage)) {
