@@ -158,8 +158,33 @@ angular.module('angular-momentum-scroll').directive('scrollable',
           }
         };
 
+        var supportsOrientationChange = 'onorientationchange' in $window,
+            orientationEvent = supportsOrientationChange ?
+                'orientationchange' : 'resize';
+        var scr = {};
+        /* register for changes */
+        var orientationEventListener = function orientationEventListener() {
+          if (scr.width !== screen.width || scr.height !== screen.height) {
+            scr = {'width' : screen.width, 'height' : screen.height};
+            if (angular.isDefined(iScrollInstance)) {
+              iScrollInstance.refresh();
+            }
+          }
+        };
+
+        // destroy iScrollInstance and cleaning up event handlers
+        var _destroy = function() {
+          if (angular.isDefined(iScrollInstance)) {
+            $window.removeEventListener(orientationEvent, orientationEventListener, false);
+
+            iScrollInstance.destroy();
+            iScrollInstance = undefined;
+          }
+        };
+
         // initializer
         var _init = function() {
+          _destroy();
           iScrollInstance = new IScroll(element[0], scope.iscrollParameters);
           // attach 'on'-callbacks
           for (var onMethod in scope) {
@@ -179,30 +204,14 @@ angular.module('angular-momentum-scroll').directive('scrollable',
           scope.$watch('currY', scrollToY);
           scope.$watch('currX', scrollToX);
 
-         /* refresh the scroller on orientation change for mobile 
-          * 
-          * Detect whether device supports orientationchange event,
-          * otherwise fall back to the resize event. */
-          var supportsOrientationChange = 'onorientationchange' in $window,
-          orientationEvent = supportsOrientationChange ?
-         'orientationchange' : 'resize';
-          var scr = {};
-          /* register for changes */
-          $window.addEventListener(orientationEvent, function() {
-            if (scr.width !== screen.width || scr.height !== screen.height) {
-              scr = {'width' : screen.width, 'height' : screen.height};
-              if (angular.isDefined(iScrollInstance)) {
-                iScrollInstance.refresh();
-              }
-            }
-          }, false);
+          // refresh the scroller on orientation change for mobile
+          $window.addEventListener(orientationEvent, orientationEventListener, false);
 
           /* make sure to free memory if scrollable element is
           * destroyed (avoid memleaking)*/
           element.bind('$destroy', function() {
             if (angular.isDefined(iScrollInstance)) {
-              iScrollInstance.destroy();
-              iScrollInstance = undefined;
+              _destroy();
             }
           });
         };
@@ -227,9 +236,6 @@ angular.module('angular-momentum-scroll').directive('scrollable',
 
         var _refresh = function(nVal) {
             if (angular.isDefined(nVal)) {
-              if (angular.isDefined(iScrollInstance)) {
-                iScrollInstance.destroy();
-              }
               $timeout(function(){
                 _init();
                 if (angular.isDefined(iScrollInstance.pages) &&
