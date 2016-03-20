@@ -1,11 +1,14 @@
 # Change-Log
 
+## 2016-03-20 v0.5.11
+properly cleaning up event handler and destroy potential outdated instance before init
+
 ## 2014-09-25
 fixed click behavior for older webkit browsers
 
 ## 2014-9-24
 * Listening to resize of scroller instead of number of elements
-* Default option preventDefualt set to false (allow clicktrhough)
+* Default option preventDefault set to false (allow clickthrough)
 
 ## 2014-07-14
 * Moved to version number 0.5.8
@@ -32,7 +35,7 @@ fixed reinitialization on DOM extension
 fixed accessing undefined scope vars
 
 ## 2013-10-31
-fixed horizontal scroll for new iScroll parameter scrollX 
+fixed horizontal scroll for new iScroll parameter scrollX
 
 ## 2013-10-30
 Fixed regular scroll
